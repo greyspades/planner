@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Projects | Devops | LAPO MFB
+        </title>
+        <link rel="icon" type="image/x-icon" href="/images/Business Planner/downloadnn.png">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/BusinessPlanner.css">
+        <meta name="viewport" content="width: device-width, initial-scale: 1.0">
+    </head>
+    <body>
+        <div class="navbar">
+            <br><br><a class="navbara" href="/businessplanner/home">DASHBOARD</a><br>
+            <a class="navbara" id="projbar" href="/businessplanner/home/projects">PROJECTS</a>
+            <a class="navbara" href="/businessplanner/home/submittingtasks/selectproj">SUBMIT ACTIVITY</a>
+            <a class="navbara" href="/businessplanner/home/viewreport">VIEW REPORT</a><br>
+            <a class="selected">BIN</a>
+        </div>
+        <header class="header">
+            <img src="/images/Business Planner/lapo_logo_plain.png" style="width: 10vw; margin: 6px 15px">
+            <div class="sign-out-box">
+                <a onclick="toggleSignOutDropdown()"><img src="/images/Business Planner/icons8-expand-arrow-96.png" style="width: 1vw; float: right; padding: 1vw 0; margin-right: 0.5vw"><img src="/images/Business Planner/icons8-user-64.png" style="width: 3vw; float: right; margin: 2.3px 0"></a>
+                <div class="dropdown-content2" style="top: 3.35vw; width: 7vw" id="signOutDropdown">
+                    <a style="padding: 0.5vw 1vw" onclick="logout()">Sign Out</a>
+                </div>
+            </div>
+        </header>
+        <div class="bodyhead">
+            <div style="color: black; padding: 0.5vw"><a href="/businessplanner/home">home</a> / <div style="display: inline-block; color: #efefef">BIN</div></div>
+        </div>
+        <div class="body">
+            <center><h1 style="color: #366345">DELETED ITEMS</h1></center>
+            <center><h2 style="color: #366345">PROJECTS</h2></center>
+            <table class="milestone-table">
+                <tr>
+                    <th>Title</th>
+                    <th>Summary</th>
+                    <th>Deleted date</th>
+                </tr>
+                <%if(data1.length) {for(var j=0; j<data1.length; j++) {%>
+                    <tr>
+                        <td><%= data1[j].title%></td>
+                        <td><%= JSON.parse(data1[j].brief)%></td>
+                        <td><%= JSON.stringify(data1[j].statdate).slice(1, 11)%></td>
+                    </tr>
+                <%} } %>
+            </table>
+            <center><h2 style="color: #366345">MILESTONES</h2></center>
+                <table class="milestone-table">
+                    <tr>
+                        <th>Title</th>
+                        <th>Summary</th>
+                        <th>Priority</th>
+                        <th>Project</th>
+                        <th>Deleted Date</th>
+                    </tr>
+            <%if(data2.length) {for(var k=0; k<data2.length; k++) { if(data2[k].stat == "Deleted") {%>
+                <tr>
+                    <td><%= data2[k].title%></td>
+                    <td><%= JSON.parse(data2[k].brief)%></td>
+                    <td><%= data2[k].priority%></td>
+                    <td><%= data2[k].project%></td>
+                    <td><%= JSON.stringify(data2[k].statdate).slice(1, 11)%></td>
+                </tr>
+             
+            <%} } }%></table>
+        </div>
+
+        <div class="footer">
+            <p style="color: #366345; font-weight: bold">LAPO Mfb</p><p>@ 2023 DevOps.</p>
+            <p style="color: #366345; font-weight: bold; float: right"> LAPO Mfb</p><p style="float: right">Powered by </p>
+        </div>
+
+        
+        <div class="popup" id="logoutBox">
+            <div class="popupheader">DO YOU WANT TO SIGN OUT?</div>
+            <div class="popupcontent" style="height: 6vw">Are you sure you want to sign out? You will be taken back to the login page.
+                    <br><br><a class="popupbtn" href="/businessplanner/logout">SIGN OUT</a><a class="popupbtn" onclick="logoutCancel()">CANCEL</a>
+            </div>
+        </div>
+    </body>
+    <script src="/javascripts/BusinessPlanner.js"></script>
+</html>

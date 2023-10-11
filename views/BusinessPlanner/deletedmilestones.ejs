@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Projects | Devops | LAPO MFB
+        </title>
+        <link rel="icon" type="image/x-icon" href="/images/Business Planner/downloadnn.png">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/BusinessPlanner.css">
+        <meta name="viewport" content="width: device-width, initial-scale: 1.0">
+    </head>
+    <body>
+        <div class="navbar">
+            <br><br><a class="navbara" href="/businessplanner/home">DASHBOARD</a><br>
+            <a class="selected" id="projbar">PROJECTS</a>
+            <a class="navbara" href="/businessplanner/home/submittingtasks/selectproj">SUBMIT ACTIVITY</a>
+            <a class="navbara" href="/businessplanner/home/viewreport">VIEW REPORT</a><br>
+            <a class="navbara" href="/businessplanner/home/bin">BIN</a>
+        </div>
+        <header class="header">
+            <img src="/images/Business Planner/lapo_logo_plain.png" style="width: 10vw; margin: 6px 15px">
+            <div class="sign-out-box">
+                <a onclick="toggleSignOutDropdown()"><img src="/images/Business Planner/icons8-expand-arrow-96.png" style="width: 1vw; float: right; padding: 1vw 0; margin-right: 0.5vw"><img src="/images/Business Planner/icons8-user-64.png" style="width: 3vw; float: right; margin: 2.3px 0"></a>
+                <div class="dropdown-content2" style="top: 3.35vw; width: 7vw" id="signOutDropdown">
+                    <a style="padding: 0.5vw 1vw" onclick="logout()">Sign Out</a>
+                </div>
+            </div>
+        </header>
+        <div class="bodyhead">
+            <div style="color: black; padding: 0.5vw"><a href="/businessplanner/home">home</a> / <div style="display: inline-block; color: #efefef">PROJECTS</div></div>
+        </div>
+        <div class="body" style="pointer-events: none; opacity: 0.6">
+            <div class="table">
+                <h2 style="padding-left: 2vw">DevOps Projects<a class="addbtn" href="/businessplanner/home/addnewproject"><img src="/images/Business Planner/icons8-plus-90.png"> ADD NEW PROJECT</a><br></h2>
+                <table width="100%">
+                <tr>
+                    <th>Projects</th>
+                    <th>Description</th>
+                    <th>View projects</th>
+                </tr>
+                <%if(data.length) {for(var i=0; i<data.length; i++) {%>
+                    <tr>
+                        <td><%= data[i].title%></td>
+                        <td><%= data[i].brief%></td>
+                        <td style="text-align: center;"><a class="view-project-link">View project</a></td>
+                    </tr>
+                <%} } %>
+                </table>
+            </div>
+        </div>
+
+        <div class="popupbox" style="display: flex; flex-direction: column" id="bdproj"><div style="background-color: white; position: sticky; top: -1vw; padding-bottom: 0.2vw">
+            <div style="border-bottom: 1px solid #366345"><div style="position: sticky; top: 0; background-color: white"><a href="/businessplanner/home/projects" style="float: right; width: 2%; padding: 0.5%; top: 0"><img width="100%" src="/images/Business Planner/icons8-remove-100.png"></a>
+            <div class="dropdown">
+                <a class="dropdownbtn" onclick="toggleDropdownBar(this)"><img src="/images/Business Planner/icons8-3-dots-90.png"></a>
+                <div class="dropdown-content" id="dropdownContent">
+                    <a href="../view">Go back to previous page</a>
+                </div>
+            </div></div><br>
+            <center><h1 style="color: #366345"><%= data2%></h1></center></div></div>
+            <center><h3 style="color: #366345">Deleted Milestones</h3></center>
+            <%if(data1.length) {for(var k=0; k<data1.length; k++) { if(data1[k].stat == "Deleted") {%>
+                <table class="milestone-table">
+                    <tr>
+                        <th>Title</th>
+                        <th>Summary</th>
+                        <th>Priority</th>
+                        <th>Deleted Date</th>
+                    </tr>
+                        <tr>
+                            <td><%= data1[k].title%></td>
+                            <td><%= JSON.parse(data1[k].brief)%></td>
+                            <td><%= data1[k].priority%></td>
+                            <td><%= JSON.stringify(data1[k].statdate).slice(1, 11)%></td>
+                        </tr>
+                </table>
+            <%} } }%>
+            <div class="bottom-links">
+                <a href="../view" style="float: left"><img src="/images/Business Planner/icons8-back-arrow-90-green.png">Go back to previous page</a>
+                <a href="/businessplanner/home/bin" style="float: right">Go to bin<img src="/images/Business Planner/icons8-bin-96.png"></a>
+            </div>
+        </div>
+        
+        <div class="popup" id="logoutBox">
+            <div class="popupheader">DO YOU WANT TO SIGN OUT?</div>
+            <div class="popupcontent" style="height: 6vw">Are you sure you want to sign out? You will be taken back to the login page.
+                    <br><br><a class="popupbtn" href="/businessplanner/logout">SIGN OUT</a><a class="popupbtn" onclick="logoutCancel()">CANCEL</a>
+            </div>
+        </div>
+
+    </body>
+    <script src="/javascripts/BusinessPlanner.js"></script>
+</html>

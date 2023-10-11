@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Submit tasks | Devops | LAPO MFB
+        </title>
+        <link rel="icon" type="image/x-icon" href="/images/Business Planner/downloadnn.png">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/BusinessPlanner.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="overflow: hidden">
+        <div class="navbar">
+            <br><br><a class="navbara" href="/businessplanner/home">DASHBOARD</a><br>
+            <a id="projbar" class="navbara" href="/businessplanner/home/projects">PROJECTS</a>
+            <a class="selected">SUBMIT ACTIVITY</a>
+            <a class="navbara" href="/businessplanner/home/viewreport">VIEW REPORT</a><br>
+            <a class="navbara" href="/businessplanner/home/bin">BIN</a>
+        </div>
+        <header class="header">
+            <img src="/images/Business Planner/lapo_logo_plain.png" style="width: 10vw; margin: 6px 15px">
+            <div class="sign-out-box">
+                <a onclick="toggleSignOutDropdown()"><img src="/images/Business Planner/icons8-expand-arrow-96.png" style="width: 1vw; float: right; padding: 1vw 0; margin-right: 0.5vw"><img src="/images/Business Planner/icons8-user-64.png" style="width: 3vw; float: right; margin: 2.3px 0"></a>
+                <div class="dropdown-content2" style="top: 3.35vw; width: 7vw" id="signOutDropdown">
+                    <a style="padding: 0.5vw 1vw" onclick="logout()">Sign Out</a>
+                </div>
+            </div>
+        </header>
+        <div class="bodyhead">
+            <div style="color: black; padding: 0.5vw"><a href="/businessplanner/home">home</a> / submittingtasks / <div style="display: inline-block; color: #efefef">SELECTPROJ</div></div>
+        </div>
+        <div class="body blur" id="bdproj" style="pointer-events: none;">
+        <form method="post" action="/businessplanner/submittingtasks...">
+        <div id="form">
+            <a href="/businessplanner/home/submittingtasks/selectproj" class="back-arrow"><img src="/images/Business Planner/icons8-back-arrow-90.png"></a><br>
+            <fieldset class="report">
+                <h1>ADD TASK</h1>
+                <label for="date">SUBMISSION WEEK</label>
+                <input type="date" name="date" id="date" readonly><input type="date" name="date0" id="date0" readonly><br><br>
+                <h3>PROJECT TITLE: </h3>
+                <label for="milestone">MILESTONE</label><br>
+                <select name="milestone" id="milestonetit" required style="width: 38%"></select><br><br>
+                <label for="activity">ACTIVITY</label><br>
+                <textarea name="activity" rows="6" placeholder="Enter activity here" required></textarea><br><br>
+                <label for="status">MILESTONE STATUS </label>
+                <select name="status" required>
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                </select><br><br>
+                <label for="comment">REMARKS</label><br>
+                <textarea name="comment" rows="4" placeholder="Enter remarks here"></textarea><br>
+                <button type="submit" class="reportsubmit">SUBMIT</button>
+            </fieldset>
+        </div>
+        <button id="submitallbtn" class="reportsubmit" style="margin-left: 1vw; display: block" onclick="submitAll()">SUBMIT ALL</button>
+        <a id="addtask" onclick="addtask()" class="reportbtn"><img src="/images/Business Planner/icons8-plus-100.png" width="100%"></a>
+        <a id="remtask" onclick="removetask()" class="reportbtn"><img src="/images/Business Planner/icons8-minus-96.png" width="100%"></a>
+        <a id="save" onclick="addmilestone()" class="reportbtn"><img src="/images/Business Planner/icons8-save-96.png" width="100%"></a>
+        <a id="retrieve" onclick="retrieve()" class="reportbtn"><img src="/images/Business Planner/icons8-upload-96.png" width="100%"></a>
+        <button id="submitbtn" class="reportsubmit" style="margin-left: 1vw; display: block" onclick="submitAll()">SUBMIT</button>
+        <br></form>
+    </div>
+    
+    <form class="report" style="transform: translate(-50%, -50%); left: 55%; top: 50%; padding: 2vw 5vw; position: absolute; text-align: center;" method="post" action="/businessplanner/loadprojectsubmitreport">
+        <h3>ERROR</h3>
+        <center><p style="color: red">An error occured, please try again.</p>
+        <a href="/businessplanner/home/submittingtasks/selectproj" class="reportsubmit" style="display: block; width: 80%">BACK</a></center>
+    </form>
+
+    
+    <div class="popup" id="logoutBox">
+        <div class="popupheader">DO YOU WANT TO SIGN OUT?</div>
+        <div class="popupcontent" style="height: 6vw">Are you sure you want to sign out? You will be taken back to the login page.
+                <br><br><a class="popupbtn" href="/businessplanner/logout">SIGN OUT</a><a class="popupbtn" onclick="logoutCancel()">CANCEL</a>
+        </div>
+    </div>
+    </body>
+    <script src="/javascripts/BusinessPlanner.js"></script>
+    <script>
+        function repeat() {
+            const d = new Date();
+            let today = Date.now();
+            let day = d.getDay();
+            let mon = today - ((day - 1) * 86400000);
+            let fri = mon + (4 * 86400000);
+            const mond = new Date(mon);
+            const frid = new Date(fri);
+            let monday = mond.getDate();
+            if(monday<10) monday = "0" + monday;
+            let mondm = mond.getMonth() + 1;
+            if(mondm<10) mondm = "0" + mondm;
+            let mondy = mond.getFullYear();
+            let friday = frid.getDate();
+            if(friday<10) friday = "0" + friday;
+            let fridm = frid.getMonth() + 1;
+            if(fridm<10) fridm = "0" + fridm;
+            let fridy = frid.getFullYear();
+            const startdate = mondy + "-" + mondm + "-" + monday;
+            const enddate = fridy + "-" + fridm + "-" + friday;
+            const forms = document.querySelectorAll("fieldset");
+            for(var i=0; i<forms.length; i++) {
+                forms[i].children[2].setAttribute("value", startdate);
+                forms[i].children[3].setAttribute("value", enddate);
+            }
+        }
+        setInterval(repeat, 1);
+    </script>
+</html>
+
+

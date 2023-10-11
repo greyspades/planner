@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Projects | Devops | LAPO MFB
+        </title>
+        <link rel="icon" type="image/x-icon" href="/images/Business Planner/downloadnn.png">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/BusinessPlanner.css">
+        <meta name="viewport" content="width: device-width, initial-scale:1.0">
+    </head>
+    <body>
+        <div class="navbar">
+            <br><br><a class="navbara" href="/businessplanner/home">DASHBOARD</a><br>
+            <a class="selected" id="projbar">PROJECTS</a>
+            <a class="navbara" href="/businessplanner/home/submittingtasks/selectproj">SUBMIT ACTIVITY</a>
+            <a class="navbara" href="/businessplanner/home/viewreport">VIEW REPORT</a><br>
+            <a class="navbara" href="/businessplanner/home/bin">BIN</a>
+        </div>
+        <header class="header">
+            <img src="/images/Business Planner/lapo_logo_plain.png" style="width: 10vw; margin: 6px 15px">
+            <div class="sign-out-box">
+                <a onclick="toggleSignOutDropdown()"><img src="/images/Business Planner/icons8-expand-arrow-96.png" style="width: 1vw; float: right; padding: 1vw 0; margin-right: 0.5vw"><img src="/images/Business Planner/icons8-user-64.png" style="width: 3vw; float: right; margin: 2.3px 0"></a>
+                <div class="dropdown-content2" style="top: 3.35vw; width: 7vw" id="signOutDropdown">
+                    <a style="padding: 0.5vw 1vw" onclick="logout()">Sign Out</a>
+                </div>
+            </div>
+        </header>
+        <div class="bodyhead">
+            <div style="color: black; padding: 0.5vw"><a href="/businessplanner/home">home</a> / <a href="/businessplanner/home/projects">projects</a> / <div style="display: inline-block; color: #efefef">EDITMILESTONE</div></div>
+        </div>
+        <div class="body">
+            <a href="/businessplanner/home/projects/view" class="back-arrow"><img src="/images/Business Planner/icons8-back-arrow-90.png"></a><br>
+            <form class="report2" method="post" action="/businessplanner/editmilestone...">
+                <p>PROJECT: <%= data.title%></p><br>
+                <label for="title">MILESTONE TITLE</label><br>
+                <input name="id" hidden value="<%=data.mid%>" />
+                <input name="prevTitle" hidden value="<%=data.mTitle%>" />
+                <input name="title" style="font-size: 2.1vw; background-color: white; border: none; font-weight: bold; width: 40%" value="<%= data.mTitle%>" required><br><br>
+                <label style="margin-top: 20px; margin-bottom: 10px;" for="desc">MILESTONE SUMMARY</label><br>
+                <textarea style="background-color: white; width: 100%; height: 150px;" name="description" placeholder="Edit description" required><%= data.mDescription%></textarea>
+                <p style="color: red; font-size: 0.9vw; display: none; margin: -0.2vw 0 -2.25vw;">Invalid input</p><br><br>
+                <label for="priority">PRIORITY </label>
+                <input style="background-color: white;" name="priority" value="<%= data.mPriority%>" pattern="(High|Medium|Low)" list="priority" title="Value must be High, Medium or Low" required>
+                <datalist id="priority">
+                    <option value="High">
+                    <option value="Medium">
+                    <option value="Low">
+                </datalist><br><br>
+                <label for="date">DATE TO BE COMPLETED </label>
+                <% if ((data.mDate).getTime() < Date.now()) {%>
+                <input type="date" name="date" id="endDate" value="<%= JSON.stringify(data.mDate).slice(1, 11)%>" min="<%= JSON.stringify(data.mDate).slice(1, 11)%>" required><br>
+                <%} else if ((data.mDate).getTime() > Date.now()) {%>
+                    <input type="date" name="date" value="<%= JSON.stringify(data.mDate).slice(1, 11)%>" id="dateSet" required><br>
+                <%} %>
+                <button type="submit" class="reportsubmit" style="display: block">SAVE</button><br>
+            </form>
+            
+            <div class="footer">
+                <p style="color: #366345; font-weight: bold">LAPO Mfb</p><p>@ 2023 DevOps.</p>
+                <p style="color: #366345; font-weight: bold; float: right"> LAPO Mfb</p><p style="float: right">Powered by </p>
+            </div>
+        </div>
+
+        
+        <div class="popup" id="logoutBox">
+            <div class="popupheader">DO YOU WANT TO SIGN OUT?</div>
+            <div class="popupcontent" style="height: 6vw">Are you sure you want to sign out? You will be taken back to the login page.
+                    <br><br><a class="popupbtn" href="/businessplanner/logout">SIGN OUT</a><a class="popupbtn" onclick="logoutCancel()">CANCEL</a>
+            </div>
+        </div>
+    </body>
+    <script src="/javascripts/BusinessPlanner.js"></script>
+    <script>
+        const d = new Date();
+        let day = d.getDate();
+        if (day<10) day = "0" + day;
+        let month = d.getMonth() + 1;
+        if (month<10) month = "0" + month;
+        const date = d.getFullYear() + "-" + month + "-" + day;
+        const elementDate = document.getElementById("dateSet");
+        elementDate && (elementDate.setAttribute("min", date));
+    </script>
+</html>

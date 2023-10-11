@@ -1,0 +1,44 @@
+{
+  "name": "nodeapp",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "build": "postcss tailwind.css -o dist/scripts/tailwind.css"
+  },
+  "dependencies": {
+    "@mui/icons-material": "^5.14.13",
+    "autoprefixer": "^10.4.16",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "~1.4.4",
+    "crypto-js": "^4.1.1",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-session": "^1.17.3",
+    "formidable": "^3.5.1",
+    "fs": "^0.0.1-security",
+    "html-docx-js": "^0.3.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "mssql": "^10.0.1",
+    "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.6.1",
+    "node-fetch": "^2.7.0",
+    "nodemailer": "^6.9.3",
+    "postcss": "^8.4.30",
+    "postcss-cli": "^10.1.0",
+    "tailwindcss": "^3.3.3",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "main": "app.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "tailwind:css": "postcss public/stylesheets/tailwind.css -o public/stylesheets/style.css"
+}

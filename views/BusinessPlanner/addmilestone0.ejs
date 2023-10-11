@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Projects | Devops | LAPO MFB
+        </title>
+        <link rel="icon" type="image/x-icon" href="/images/Business Planner/downloadnn.png">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/BusinessPlanner.css">
+        <meta name="viewport" content="width: device-width, initial-scale:1.0">
+    </head>
+    <body>
+        <div class="navbar">
+            <br><br><a class="navbara" href="/businessplanner/home">DASHBOARD</a><br>
+            <a class="selected" id="projbar">PROJECTS</a>
+            <a class="navbara" href="/businessplanner/home/submittingtasks/selectproj">SUBMIT ACTIVITY</a>
+            <a class="navbara" href="/businessplanner/home/viewreport">VIEW REPORT</a><br>
+            <a class="navbara" href="/businessplanner/home/bin">BIN</a>
+        </div>
+        <header class="header">
+            <img src="/images/Business Planner/lapo_logo_plain.png" style="width: 10vw; margin: 6px 15px">
+            <div class="sign-out-box">
+                <a onclick="toggleSignOutDropdown()"><img src="/images/Business Planner/icons8-expand-arrow-96.png" style="width: 1vw; float: right; padding: 1vw 0; margin-right: 0.5vw"><img src="/images/Business Planner/icons8-user-64.png" style="width: 3vw; float: right; margin: 2.3px 0"></a>
+                <div class="dropdown-content2" style="top: 3.35vw; width: 7vw" id="signOutDropdown">
+                    <a style="padding: 0.5vw 1vw" onclick="logout()">Sign Out</a>
+                </div>
+            </div>
+        </header>
+        <div class="bodyhead">
+            <div style="color: black; padding: 0.5vw"><a href="/businessplanner/home">home</a> / <a href="/businessplanner/home/projects">projects</a> / <a href="/businessplanner/home/addnewproject">addproject</a> / <div style="display: inline-block; color: #efefef">ADDMILESTONE</div></div>
+        </div>
+        <div class="body">
+            <a href="/businessplanner/home/addnewproject" class="back-arrow"><img src="/images/Business Planner/icons8-back-arrow-90.png"></a><br>
+            <form method="post" action="/businessplanner/addingmilestone...">
+                <div id="milestone">
+                <fieldset class="report">
+                    <h1>ADD NEW MILESTONE TO PROJECT</h1>
+                    <h3 id="projselect">PROJECT NAME: <%= data%></h3>
+                    <label for="title">MILESTONE TITLE</label><br>
+                    <input type="text" name="title" required><br><br>
+                    <label for="desc">MILESTONE DESCRIPTION</label><br>
+                    <textarea name="desc" rows="4" placeholder="Enter description here" required></textarea>
+                    <p style="color: red; font-size: 0.9vw; display: none; margin: -0.2vw 0 -2.25vw;">Invalid input</p><br><br>
+                    <label for="priority">PRIORITY </label>
+                    <select name="priority" required>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                    <label for="date">DATE TO BE COMPLETED </label>
+                    <input type="date" name="date" id="date" required><br>
+                    <button type="submit" class="reportsubmit">ADD MILESTONE</button><br>
+                </fieldset>
+                </div>
+                <a id="addtask" onclick="addnewmilestone()" class="reportbtn"><img src="/images/Business Planner/icons8-plus-100.png" width="100%"></a>
+                <a id="remtask" onclick="remMilestoneForm()" class="reportbtn"><img src="/images/Business Planner/icons8-minus-96.png" width="100%"></a>
+                <input type="submit" id="submitbtn" class="reportsubmit" value="ADD NEW MILESTONE" style="margin-left: 1vw; display: inline-block">
+                <input type="submit" id="submitallbtn" class="reportsubmit" value="SAVE ALL MILESTONES" style="margin-left: 1vw; display: inline-block">
+            </form>
+            <br>
+            <div class="footer">
+                <p style="color: #366345; font-weight: bold">LAPO Mfb</p><p>@ 2023 DevOps.</p>
+                <p style="color: #366345; font-weight: bold; float: right"> LAPO Mfb</p><p style="float: right">Powered by </p>
+            </div>
+        </div>
+
+        
+        <div class="popup" id="logoutBox">
+            <div class="popupheader">DO YOU WANT TO SIGN OUT?</div>
+            <div class="popupcontent" style="height: 6vw">Are you sure you want to sign out? You will be taken back to the login page.
+                    <br><br><a class="popupbtn" href="/businessplanner/logout">SIGN OUT</a><a class="popupbtn" onclick="logoutCancel()">CANCEL</a>
+            </div>
+        </div>
+        
+    </body>
+    <script src="/javascripts/BusinessPlanner.js"></script>
+    <script>
+        function repl() {
+            const d = new Date();
+            let day = d.getDate();
+            if(day<10) day = "0" + day;
+            let month = d.getMonth() + 1;
+            if(month<10) month = "0" + month;
+            let year = d.getFullYear();
+            const date0 = year + "-" + month + "-" + day;
+            const fieldsets = document.getElementsByTagName("fieldset");
+            for(var i=0; i<fieldsets.length; i++) {
+                fieldsets[i].getElementsByTagName("input")[1].setAttribute("min", date0);
+            }
+        }
+        setInterval(repl, 1);
+    </script>
+</html>

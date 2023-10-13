@@ -64,23 +64,23 @@
                     <button type="submit" class="reportsubmit">SAVE PROJECT</button>
                 </fieldset>
             </div>
-        <a id="addtask" onclick="addproject()" class="reportbtn"><img src="/images/Business Planner/icons8-plus-100.png" width="100%"></a>
-        <a id="remtask" onclick="removeprojform()" class="reportbtn"><img src="/images/Business Planner/icons8-minus-96.png" width="100%"></a>
+        <!-- <a id="addtask" onclick="addproject()" class="reportbtn"><img src="/images/Business Planner/icons8-plus-100.png" width="100%"></a>
+        <a id="remtask" onclick="removeprojform()" class="reportbtn"><img src="/images/Business Planner/icons8-minus-96.png" width="100%"></a> -->
         <input type="submit" id="submitbtn" class="reportsubmit" style="margin-left: 1vw; display: inline-block" value="SAVE PROJECT" formaction="/businessplanner/submittingnewprojects...">
-        <input type="submit" id="submitallbtn" class="reportsubmit" style="margin-left: 1vw; display: block" value="SAVE ALL PROJECTS"></form>
+        <!-- <input type="submit" id="submitallbtn" class="reportsubmit" style="margin-left: 1vw; display: block" value="SAVE ALL PROJECTS"></form> -->
         
         <br>
-        <div class="footer">
+        <div style="margin-top: 190px" class="footer">
             <p style="color: #366345; font-weight: bold">LAPO Mfb</p><p>@ 2023 DevOps.</p>
             <p style="color: #366345; font-weight: bold; float: right"> LAPO Mfb</p><p style="float: right">Powered by </p>
         </div>
 
-        <%if(message.status){%>
+        <%if(message.error){%>
             <div class="message-popup" id="popup" style="top: 25vw; left: 56vw">
                 <div class="popupheader">An error occured processing your request</div>
                 <div class="popupcontent">
                     <p>
-                        <%=message.status %>
+                        <%=message.error %>
                     </p>
                     <button class="popupbtn" onclick="donTSave()">CANCEL</button>
                 </div>

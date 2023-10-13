@@ -743,8 +743,6 @@ router.post('/submittingnewprojects...', async function(req, res, next) {
         // }
     } else {
         const form = new formidable.IncomingForm();
-        // Set the upload directory
-    
         // Parse the form data, including files
         form.parse(req, (err, fields, file) => {
           if (err) {
@@ -782,7 +780,8 @@ router.post('/submittingnewprojects...', async function(req, res, next) {
                 })
             } else {
                 console.log("project exists");
-                res.redirect("businessplanner/home/addnewproject")
+                req.flash("error", "This project title already exists")
+                res.redirect("home/addnewproject")
             }
         })
         .catch((err) => {

@@ -122,30 +122,31 @@ router.post('/delete_project', async function(req, res, next) {
 router.get('/signup', function(req, res, next) {
     res.render('BusinessPlanner\\signup');
 });
-// router.get('/home/viewreport', function(req, res, next) {
-//     session = req.session;
-//     if(session.userid) {
-//         const d = new Date();
-//     let today = Date.now();
-//     let day = d.getDay();
-//     let mon = today - ((day - 1) * 86400000);
-//     let fri = mon + (4 * 86400000);
-//     const frid = new Date(fri);
-//     let friday = frid.getDate();
-//     let fridm = frid.getMonth() + 1;
-//     let fridy = frid.getFullYear();
-//     var filepath = "public/files/LAPODevOpsTasks" + fridm + "-" + friday + "-" + fridy + ".html";
-//     fs.access(filepath, fs.F_OK, function(err) {
-//         if (err) {
-//             res.render('BusinessPlanner\\viewemptyreport');
-//         } else {
-//             res.render('BusinessPlanner\\viewreport');
-//         }
-//     });
-//     } else {
-//         res.redirect('/businessplanner/login');
-//     }
-// });
+
+router.get('/home/viewreport', function(req, res, next) {
+    session = req.session;
+    if(session.userid) {
+        const d = new Date();
+    let today = Date.now();
+    let day = d.getDay();
+    let mon = today - ((day - 1) * 86400000);
+    let fri = mon + (4 * 86400000);
+    const frid = new Date(fri);
+    let friday = frid.getDate();
+    let fridm = frid.getMonth() + 1;
+    let fridy = frid.getFullYear();
+    var filepath = "public/files/LAPODevOpsTasks" + fridm + "-" + friday + "-" + fridy + ".html";
+    fs.access(filepath, fs.F_OK, function(err) {
+        if (err) {
+            res.render('BusinessPlanner\\viewemptyreport');
+        } else {
+            res.render('BusinessPlanner\\viewreport');
+        }
+    });
+    } else {
+        res.redirect('/businessplanner/login');
+    }
+});
 // router.get('/successfulsignup', function(req, res, next) {
 //     res.render('BusinessPlanner\\signupsucces');
 // });
@@ -247,29 +248,6 @@ router.get('/home/projects/view/:id', async function(req, res, next) {
             console.log(err)
             res.render('BusinessPlanner\\projecterr');
         })
-        
-
-
-        
-    // db.query("CALL getprojects()", function (err, rows) {
-    //     if (err) {
-    //         console.log(err);
-    //         res.render('BusinessPlanner\\projecterr');
-    //     }
-    //     db.query("CALL getmilestones_by_time(?)", varProj, function(err, rows1) {
-    //         if (err) {
-    //             console.log(err);
-    //             res.render('BusinessPlanner\\projecterr');
-    //         }
-    //         db.query("CALL get_single_project(?)", varProj, function(err, rows2) {
-    //             if (err) {
-    //                 console.log(err);
-    //                 res.render('BusinessPlanner\\projecterr');
-    //             }
-    //             res.render('BusinessPlanner\\view', {data: rows[0], data1: rows1[0], data2: rows2[0]});
-    //         });
-    //     })
-    // });
     } else {
         res.redirect('/businessplanner/login');
     }
@@ -291,14 +269,6 @@ router.get('/home/milestones/edit/:id/:title', async function(req, res, next) {
             console.log(err)
             res.render('BusinessPlanner\\projecterr');
         })
-    //     var milestone = varMiles;
-    // db.query("CALL get_single_milestone(?)", varMiles, function(err, row) {
-    //     if (err) {
-    //         console.log(err);
-    //         res.render('BusinessPlanner\\projecterr');
-    //     }
-    //     res.render('BusinessPlanner\\editmilestone', {data: row[0]});
-    // });
     } else {
         res.redirect('/businessplanner/login');
     }
@@ -319,13 +289,6 @@ router.get('/home/projects/edit/:id', async function(req, res, next) {
             console.log(err)
             res.render('BusinessPlanner\\projecterr');
         })
-        // db.query("CALL get_single_project(?)", varProj, function(err, row) {
-        //     if (err) {
-        //         console.log(err);
-        //         res.render('BusinessPlanner\\projecterr');
-        //     }
-        //     res.render('BusinessPlanner\\editproject', {data: row[0]});
-        // });
     } else {
         res.redirect('/businessplanner/login');
     }
@@ -379,35 +342,60 @@ router.get('/home/addnewproject/addnewmilestone', function(req, res, next) {
         res.redirect('/businessplanner/login');
     }
 });
-// router.get('/home/submittingtasks/selectproj', function(req, res, next) {
-//     session = req.session;
-//     if (session.userid) {
-//         db.query("CALL getprojects()", function (err, rows) {
-//             if (err) {
-//                 req.flash('error', err);
-//                 res.render('BusinessPlanner\\selectprojerr', {data: ''});
-//             } else {
-//                 console.log(err);
-//                 res.render('BusinessPlanner\\selectproj', {data: rows[0]});
-//             }
-//         });
-//     } else {
-//         res.redirect('/businessplanner/login');
-//     }
-// });
-// router.get('/home/submittingtasks/selectproj/fillreport', function(req, res, next) {
-//     session = req.session;
-//     if (session.userid) {
-//         db.query("CALL getmilestones(?)", varFormProj, function(err, rows) {
-//             if (err) {
-//                 console.log(err);
-//                 res.render('BusinessPlanner\\selectprojagain');
-//             } else res.render('BusinessPlanner\\fillreport', {data: varFormProj, data1: rows[0]});
-//         });
-//     } else {
-//         res.redirect('/businessplanner/login');
-//     }
-// });
+router.get('/home/submittingtasks/selectproj', async function(req, res, next) {
+    session = req.session;
+    if (session.userid) {
+        const request = db.request()
+        await request.execute("Get_projects")
+        .then((result) => {
+            const resData = result.recordset
+            res.render('BusinessPlanner\\selectproj', {data: resData});
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    } else {
+        res.redirect('/businessplanner/login');
+    }
+});
+
+router.post('/home/submittingtasks/selectproj/fillreport', async function(req, res, next) {
+    session = req.session;
+    if (session.userid) {
+        const title = req.body.title
+        const request = db.request()
+        request.input("title", sql.VarChar, title)
+        await request.execute("Get_project_info_by_title")
+        .then((result) => {
+            const dbResult = result.recordset
+            const response = {
+                id:dbResult[0].id,
+                title: dbResult[0].title,
+                description: dbResult[0].description,
+                status: dbResult[0].status,
+                startDate: dbResult[0].startdate,
+                endDate: dbResult[0].enddate,
+                milestones: []
+            }
+            result.recordset.forEach((item)=> {
+                let keys = Object.keys(item)
+                let obj = {}
+                keys.forEach((key) => {
+                    if(["mTitle", "mDescription", "mPriority", "mDate"].includes(key)) {
+                        obj[key] = item[key]
+                    }
+                })
+                response.milestones.push(obj)
+            })
+            res.render('BusinessPlanner\\fillreport', {data: response});
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    } else {
+        res.redirect('/businessplanner/login');
+    }
+});
 // router.get('/home/projecterr', function(req, res, next) {
 //     session = req.session;
 //     if (session.userid) {
@@ -473,74 +461,93 @@ router.get('/logout', function(req, res, next) {
     req.session.destroy();
     res.redirect('/businessplanner/login');
 });
-router.post('/submittingtasks...', function(req, res, next) {
-    const d = new Date();
-    let today = Date.now();
-    let day = d.getDay();
-    let mon = today - ((day - 1) * 86400000);
-    let fri = mon + (4 * 86400000);
-    const mond = new Date(mon);
-    const frid = new Date(fri);
-    let monday = mond.getDate();
-    let mondm = mond.getMonth() + 1;
-    let mondy = mond.getFullYear();
-    let friday = frid.getDate();
-    let fridm = frid.getMonth() + 1;
-    let fridy = frid.getFullYear();
-    const startdate = monday + "-" + mondm + "-" + mondy;
-    const enddate = friday + "-" + fridm + "-" + fridy;
-    var filepath = "public/files/LAPODevOpsTasks" + fridm + "-" + friday + "-" + fridy + ".html";
-    console.log("the koko2")
-    // fs.access(filepath, fs.F_OK, function(err) {
-    //     if (err) {
-    //         var html = "<!DOCTYPE html><html><HEAD><style>table, th, td {border: 1px solid black;border-collapse: collapse;text-align: center; font-size: 12px}</style></HEAD><body><img src='lapo_logo_plain.png' width='250px'><h6 style='color: blue; font-size: 19px'>DEPT: IT SOLUTION AND INNOVATION<BR>REPORTING PERIOD: " + startdate + " TO " + enddate + "<BR>DEPT HEAD NAME: OWEGIE OSASERE<BR>UNIT HEAD TEAM: NATHANIEL OMORAGBON<BR>TEAM MEMBERS: OLU EVANS, EBELE NMOEMENAM, CALEB NADOMA, PASCAL IKEJI</h6><table width='100%'><tr><th>ACTIVITY</th><th>REMARK</th><th>COMPLETION TIMELINE</th><th>STATUS</th></tr>";
-    //         fs.appendFile(filepath, html, function(err) {
-    //             if (err) req.flash(err);
-    //             console.log('Report created');
+
+router.post('/submittingtasks...', async function(req, res, next) {
+    const id = uuidv4();
+    const request = db.request()
+    request.input("pid", sql.VarChar, req.body.id)
+    request.input("mtitle", sql.VarChar, req.body.milestone)
+    request.input("activity", sql.VarChar, req.body.activity)
+    request.input("status", sql.VarChar, req.body.status)
+    request.input("remarks", sql.VarChar, req.body.comment)
+    request.input("id", sql.VarChar, id)
+    request.input("date", sql.Date, new Date().toLocaleDateString())
+
+    await request.execute("Create_task")
+    .then((result) => {
+        req.flash("status", "Task added successfully")
+        res.redirect('/businessplanner/home/submittingtasks/selectproj');
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+    // const d = new Date();
+    // let today = Date.now();
+    // let day = d.getDay();
+    // let mon = today - ((day - 1) * 86400000);
+    // let fri = mon + (4 * 86400000);
+    // const mond = new Date(mon);
+    // const frid = new Date(fri);
+    // let monday = mond.getDate();
+    // let mondm = mond.getMonth() + 1;
+    // let mondy = mond.getFullYear();
+    // let friday = frid.getDate();
+    // let fridm = frid.getMonth() + 1;
+    // let fridy = frid.getFullYear();
+    // const startdate = monday + "-" + mondm + "-" + mondy;
+    // const enddate = friday + "-" + fridm + "-" + fridy;
+    // var filepath = "public/files/LAPODevOpsTasks" + fridm + "-" + friday + "-" + fridy + ".html";
+    // console.log("the koko2")
+    // // fs.access(filepath, fs.F_OK, function(err) {
+    // //     if (err) {
+    // //         var html = "<!DOCTYPE html><html><HEAD><style>table, th, td {border: 1px solid black;border-collapse: collapse;text-align: center; font-size: 12px}</style></HEAD><body><img src='lapo_logo_plain.png' width='250px'><h6 style='color: blue; font-size: 19px'>DEPT: IT SOLUTION AND INNOVATION<BR>REPORTING PERIOD: " + startdate + " TO " + enddate + "<BR>DEPT HEAD NAME: OWEGIE OSASERE<BR>UNIT HEAD TEAM: NATHANIEL OMORAGBON<BR>TEAM MEMBERS: OLU EVANS, EBELE NMOEMENAM, CALEB NADOMA, PASCAL IKEJI</h6><table width='100%'><tr><th>ACTIVITY</th><th>REMARK</th><th>COMPLETION TIMELINE</th><th>STATUS</th></tr>";
+    // //         fs.appendFile(filepath, html, function(err) {
+    // //             if (err) req.flash(err);
+    // //             console.log('Report created');
+    // //         });
+    // //     }
+    // // });
+    // function play() {var title = req.body.title;
+    // var milestone = req.body.milestone;
+    // var activity = req.body.activity;
+    // var status = req.body.status;
+    // var comment = req.body.comment;
+    // if(Array.isArray(title)) {
+    //     for(var i=0; i<title.length; i++) {
+    //         let tit = title[i];
+    //         let mil = milestone[i];
+    //         let act = activity[i];
+    //         let stat = status[i];
+    //         let com = comment[i];
+    //         db.query("CALL gettimeline(?)", mil, function(err, row) {
+    //             if (err) req.flash('error', err);
+    //             else {
+    //                 var timeline = JSON.stringify(row[0][0].timeline).slice(1, 11);
+    //                 var doc = "<tr><td style='text-align: left'><b style='font-size: 15px'>" + tit + "</b><br><br><b>" + mil + "</b><br>" + act + "</td><td>" + com + "</td><td>" + timeline + "</td><td>" + stat + "</td></tr>";
+    //                 fs.appendFile(filepath, doc, function(err) {
+    //                     if (err) req.flash(err);
+    //                     console.log('File uploaded');
+    //                 });
+    //             }
     //         });
     //     }
-    // });
-    function play() {var title = req.body.title;
-    var milestone = req.body.milestone;
-    var activity = req.body.activity;
-    var status = req.body.status;
-    var comment = req.body.comment;
-    if(Array.isArray(title)) {
-        for(var i=0; i<title.length; i++) {
-            let tit = title[i];
-            let mil = milestone[i];
-            let act = activity[i];
-            let stat = status[i];
-            let com = comment[i];
-            db.query("CALL gettimeline(?)", mil, function(err, row) {
-                if (err) req.flash('error', err);
-                else {
-                    var timeline = JSON.stringify(row[0][0].timeline).slice(1, 11);
-                    var doc = "<tr><td style='text-align: left'><b style='font-size: 15px'>" + tit + "</b><br><br><b>" + mil + "</b><br>" + act + "</td><td>" + com + "</td><td>" + timeline + "</td><td>" + stat + "</td></tr>";
-                    fs.appendFile(filepath, doc, function(err) {
-                        if (err) req.flash(err);
-                        console.log('File uploaded');
-                    });
-                }
-            });
-        }
-        res.redirect('/businessplanner/home/submittingtasks/selectproj');
-    } else {
-        db.query("CALL gettimeline(?)", milestone, function(err, row) {
-            if(err) req.flash('error', err);
-            else {
-                var timeline = JSON.stringify(row[0][0].timeline).slice(1, 11);
-                var doc = "<tr><td style='text-align: left'><b style='font-size: 15px'>" + title + "</b><br><br><b>" + milestone + "</b><br>" + activity + "</td><td>" + comment + "</td><td>" + timeline + "</td><td>" + status + "</td></tr>";
-                fs.appendFile(filepath, doc, function(err) {
-                    if (err) req.flash(err);
-                    console.log('File uploaded');
-                    res.redirect('/businessplanner/home/submittingtasks/selectproj');
-                });
-            }
-        });
-    }
-    }
-    setTimeout(play, 1000);
+    //     res.redirect('/businessplanner/home/submittingtasks/selectproj');
+    // } else {
+    //     db.query("CALL gettimeline(?)", milestone, function(err, row) {
+    //         if(err) req.flash('error', err);
+    //         else {
+    //             var timeline = JSON.stringify(row[0][0].timeline).slice(1, 11);
+    //             var doc = "<tr><td style='text-align: left'><b style='font-size: 15px'>" + title + "</b><br><br><b>" + milestone + "</b><br>" + activity + "</td><td>" + comment + "</td><td>" + timeline + "</td><td>" + status + "</td></tr>";
+    //             fs.appendFile(filepath, doc, function(err) {
+    //                 if (err) req.flash(err);
+    //                 console.log('File uploaded');
+    //                 res.redirect('/businessplanner/home/submittingtasks/selectproj');
+    //             });
+    //         }
+    //     });
+    // }
+    // }
+    // setTimeout(play, 1000);
 });
 
 

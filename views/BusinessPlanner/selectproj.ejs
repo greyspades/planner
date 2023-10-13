@@ -60,15 +60,26 @@
         <br></form>
     </div>
     
-    <form class="report" style="transform: translate(-50%, -50%); left: 55%; top: 50%; padding: 2vw 5vw; position: absolute; text-align: center;" method="post" action="/businessplanner/loadprojectsubmitreport">
+    <form class="report" style="transform: translate(-50%, -50%); left: 55%; top: 50%; padding: 2vw 5vw; position: absolute; text-align: center;" method="post" action="/businessplanner/home/submittingtasks/selectproj/fillreport">
         <h3>SELECT PROJECT</h3>
-        <center><select name="project">
+        <center><select name="title">
             <%if(data.length) {for(var i=0; i<data.length; i++) {%>
                 <option><%= data[i].title%></option>
             <%} } %>
         </select>
         <input type="submit" class="reportsubmit" value="NEXT" style="display: block; width: 80%"></center>
     </form>
+    <%if(message.status){%>
+        <div class="message-popup" id="popup" style="top: 25vw; left: 56vw">
+            <div class="popupheader">An error occured processing your request</div>
+            <div class="popupcontent">
+                <p>
+                    <%=message.status %>
+                </p>
+                <button class="popupbtn" onclick="donTSave()">CANCEL</button>
+            </div>
+        </div>
+    <%}%>
 
     
     <div class="popup" id="logoutBox">

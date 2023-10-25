@@ -6,6 +6,7 @@
         </title>
         <link rel="icon" type="image/x-icon" href="/images/Business Planner/downloadnn.png">
         <link rel="stylesheet" type="text/css" href="/stylesheets/BusinessPlanner.css">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
         <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Material+Icons">
@@ -16,8 +17,8 @@
             <br><br><a class="navbara" href="/businessplanner/home">DASHBOARD</a><br>
             <a class="selected" id="projbar">PROJECTS</a>
             <a class="navbara" href="/businessplanner/home/submittingtasks/selectproj">SUBMIT ACTIVITY</a>
-            <a class="navbara" href="/businessplanner/home/viewreport">VIEW REPORT</a><br>
-            <a class="navbara" href="/businessplanner/home/bin">BIN</a>
+            <!-- <a class="navbara" href="/businessplanner/home/viewreport">VIEW REPORT</a><br>
+            <a class="navbara" href="/businessplanner/home/bin">BIN</a> -->
         </div>
         <header class="header">
             <img src="/images/Business Planner/lapo_logo_plain.png" style="width: 10vw; margin: 6px 15px">
@@ -56,7 +57,7 @@
                 <a class="dropdownbtn" onclick="toggleDropdownBar()"><img src="/images/Business Planner/icons8-3-dots-90.png"></a>
                 <div class="dropdown-content" id="dropdownContent">
                     <a href="/businessplanner/home/projects/edit/<%=data.id%>">Edit project</a>
-                    <a href="/businessplanner/downloadDoc/<%=data.id%>">Download document</a>
+                    <a onclick="addDocument()">Add document</a>
                     <a onclick="addmilestone()">Delete project</a>
                     <a href="/businessplanner/home/addnewmilestone/<%=data.id%>">Add milestone</a>
                     <%if(data.status!="COMPLETED") {%>
@@ -64,10 +65,67 @@
                     <%}%>
                 </div>
             </div></div><br>
-            <center><h1 style="color: #366345"><%= data.title%></h1></center></div></div>
-            <h3 style="color: #366345">Project Summary</h3>
+            <div style="display: flex; justify-content: space-between;">
+                <h1 class="text-[32px] font-semibold" style="color: #366345"><%= data.title%></h1>
+                <div style="margin-top: -20px;" class="">
+                    <!-- <table>
+                        <tr>
+                            <th>Project Author</th>
+                            <th>Project Unit</th>
+                            <th>Project Manager</th>
+                            <th>Project Documents</th>
+                        </tr>
+                        <tbody>
+                            <tr><tr>
+                        </tbody>
+                    </table> -->
+                    <div style="position: relative; display: flex; margin-right: 20px;" class="download-icon-container">
+                        <i style="color: black; font-size: 40px;" class="material-icons">download</i>
+                        <div style="background-color: green; border-radius: 10px; width: 20px; height: 20px; position: absolute; top: 20px; left: 25px; color: white; display: flex; justify-content: center; text-align: center;" class="download-icon"><%=docs.length%></div>
+                        <%if(docs.length > 0) {%>
+                            <div style="box-shadow: black; width: auto; height: auto; padding: 10px; line-height: 30px; border-radius: 10px; background-color: #f5f5dc; margin-right: 40px; margin-left: 10px;">
+                                <%for(var i=0; i< docs.length; i++) {%>
+                                    <div style="display: flex;">
+                                        <div style="width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"><%=docs[i].name%></div>
+                                        <div class="flex flex-row gap-2">
+                                            <a href="/businessplanner/downloadDoc/<%=docs[i].id+'~'+docs[i].name%>">
+                                                <button style="color: black; font-size: 25px;" class="material-icons">download</button>
+                                            </a>
+                                            <a href="/businessplanner/project/delete_document/<%=docs[i].id+'~'+docs[i].name%>">
+                                                <button style="color: black; font-size: 20px;" class="material-icons">delete</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                <%}%>
+                            </div>
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+        </div></div>
+            <h3 class="text-[28px] font-semibold" style="color: #366345">Project Summary</h3>
             <p style="width: 75%"><%= data.description%></p><br>
             <table class="milestone-table">
+                <tr>
+                    <th>Date Created</th>
+                    <th>Created by</th>
+                    <th>PMO assigned</th>
+                    <th>Department/Unit</th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td><%=JSON.stringify(data.creationDate).slice(1, 11)%></td>
+                        <td><%=data.author%></td>
+                        <td><%=data.pmo%></td>
+                        <td><%=data.department%></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2 style="margin-top: 40px;">Milestones</h2>
+
+
+
+            <table style="margin-top: 20px;" class="milestone-table">
                 <tr>
                     <th>Title</th>
                     <th>About</th>
@@ -76,8 +134,9 @@
                     <th>Actions</th>
                 </tr>
                 <tbody><%if(data.milestones.length > 0) {for(let i=0; i<data.milestones.length; i++) {%>
+                   <div>
                     <tr>
-                        <form method="post" action="/businessplanner/editmilestone">
+                        <div m-title="<%=data.milestones[i].mTitle%>" m-id="<%=data.milestones[i].mId%>" class="milestone">
                             <td id="milestone-title"><input name="milestone" value="<%= data.title%>" class="input" readonly>
                                 <%= data.milestones[i].mTitle%>
                             </td>
@@ -88,17 +147,74 @@
                                 <p style="color: red;"><%=JSON.stringify(data.milestones[i].mDate).slice(1, 11)%></p>
                             <%}%></td>
                             <td><%= data.milestones[i].mPriority%></td>
-                            <td style="display: flex; flex-direction: column; gap: 38px;">
-                                <button style="border: none; background-color: transparent; float: right"><img src="/images/Business Planner/icons8-delete-96.png" style="width: 1vw"></button>
-                                <a style="border: none; background-color: transparent; float: right" href="/businessplanner/home/milestones/edit/<%=data.id%>/<%=data.milestones[i].mTitle%>" ><img src="/images/Business Planner/icons8-edit-96.png" style="width: 1vw"></a>
+                            <td style="">
+                                <div class="dropdown">
+                                    <a class="dropdownbtn" onclick="toggleMilestoneMenu()"><i style="color: black; font-size: 20px;" class="material-icons">menu</i></a>
+                                    <div style="display: none;" class="dropdown-content" id="milestoneMenu">
+                                        <a style="border: none; float: right" href="/businessplanner/home/milestones/edit/<%=data.id%>/<%=data.milestones[i].mTitle%>" >Delete Milestone</a>
+                                        <a style="border: none; float: right" href="/businessplanner/home/milestones/edit/<%=data.id%>/<%=data.milestones[i].mTitle%>" >Edit Milestone</a>
+                                        <div style="background-color: #f5f5DC; padding: 10px;">
+                                            <form id="myForm" method="post" action="/businessplanner/changeMilestoneStatus">
+                                                <select id="mySelect" style="height: 40px; width: 100%;" name="status">
+                                                    <option value="ToDo">ToDo</option>
+                                                    <option value="Ongoing">Ongoing</option>
+                                                    <option value="Completed">Completed</option>
+                                                </select>
+                                                <input hidden value="<%=data.id%>" type="text" name="id" id="itemName">
+                                                <input hidden value="<%=data.milestones[i].mTitle%>" type="text" name="itemName" id="itemId">
+                                                <!-- <input type="submit" id="submitallbtn" class="reportsubmit" value="SAVE ALL MILESTONES"> -->
+                                                <button style="margin-top: 10px;" type="submit">Submit</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
-                        </form>
+                        </div>
                     </tr>
+                    <tr>
+                        <td colspan="6">
+                            <div class="bg-[#f5f5DC] p-2 rounded-md h-[70px] text-start">
+                                Comment: <%=data.milestones[i].mComment%>
+                            </div>
+                        </td>
+                    </tr>
+                   </div>
                 <%}} %></tbody>
             </table>
 
         </div>
         <div>
+        </div>
+        <!-- <div class="message-popup" id="popup" style="top: 25vw; left: 56vw">
+            <div class="popupheader">Change the status of this milestone</div>
+            <div class="popupcontent">
+                <form id="itemForm" method="post" action="/businessplanner/editmilestone">
+                    <select style="width: 300px; height: 40px;" name="priority" required>
+                        <option value="ToDo">ToDo</option>
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                    <input type="text" name="itemName" id="itemName">
+                    <input type="text" name="itemName" id="itemId">
+                </form>
+                <div style="margin-top: 40px;">
+                    <button class="popupbtn" onclick="donTSave()">SUBMIT</button>
+                <button class="popupbtn" onclick="donTSave()">CANCEL</button>
+                </div>
+            </div>
+        </div> -->
+        <div class="message-popup" id="addDoc" style="top: 25vw; left: 56vw; display: none;">
+            <div class="popupheader">Add a new document</div>
+            <div class="popupcontent h-[150px]">
+                <form class="mt-[20px]" method="post" action="/businessplanner/project/add_document" enctype="multipart/form-data">
+                    <input class="w-[100%]" name="doc" type="file">
+                    <input hidden class="w-[100%]" name="id" value="<%=data.id%>">
+                    <div class="flex flex-row gap-6 mt-[20px] justify-end">
+                        <input class="bg-white h-[40px] text-black p-2" type="submit" value="Submit">
+                        <button class="popupbtn" onclick="cancelAddDoc()">CANCEL</button>
+                    </div>
+                </form>
+            </div>
         </div>
         <%if(message.error){%>
             <div class="message-popup" id="popup" style="top: 25vw; left: 56vw">
@@ -134,6 +250,8 @@
             </div>
         <%}%>
 
+        
+
         <div class="popup" id="popup" style="top: 25vw; left: 56vw">
             <div class="popupheader">ARE YOU SURE YOU WANT TO DELETE THIS PROJECT?</div>
             <div class="popupcontent">If you click the DELETE button, this project and all its details will be deleted.
@@ -159,6 +277,26 @@
             // Find the parent element (the flash message container) and hide it
             var flashMessage = buttonElement.parentElement.parentElement;
             flashMessage.style.display = 'none';
+        }
+    </script>
+    <script>
+        function toggleMilestoneMenu() {
+            const menu = document.getElementById("milestoneMenu").style.display
+            if(menu == 'none') {
+                document.getElementById("milestoneMenu").style.display = "block";
+            } else {
+                document.getElementById("milestoneMenu").style.display = "none";
+            }
+        }
+    </script>
+    <script>
+        function addDocument() {
+            const form = document.getElementById("addDoc")
+            form.style.display = "block"
+        }
+        function cancelAddDoc() {
+            const form = document.getElementById("addDoc")
+            form.style.display = "none"
         }
     </script>
 

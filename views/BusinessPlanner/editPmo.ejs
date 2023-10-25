@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Projects | Devops | LAPO MFB
+        </title>
+        <link rel="icon" type="image/x-icon" href="/images/Business Planner/downloadnn.png">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/BusinessPlanner.css">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+        <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Material+Icons">
+        <meta name="viewport" content="width: device-width, initial-scale:1.0">
+    </head>
+    <body>
+        <div class="navbar">
+            <br><br><a class="navbara" href="/businessplanner/home">DASHBOARD</a><br>
+            <a class="selected" id="projbar">PROJECTS</a>
+            <a class="navbara" href="/businessplanner/home/submittingtasks/selectproj">SUBMIT ACTIVITY</a>
+            <!-- <a class="navbara" href="/businessplanner/home/viewreport">VIEW REPORT</a><br>
+            <a class="navbara" href="/businessplanner/home/bin">BIN</a> -->
+        </div>
+        <!-- <header class="header">
+            <img src="/images/Business Planner/lapo_logo_plain.png" style="width: 10vw; margin: 6px 15px">
+            <div class="sign-out-box">
+                <a onclick="toggleSignOutDropdown()"><img src="/images/Business Planner/icons8-expand-arrow-96.png" style="width: 1vw; float: right; padding: 1vw 0; margin-right: 0.5vw"><img src="/images/Business Planner/icons8-user-64.png" style="width: 3vw; float: right; margin: 2.3px 0"></a>
+                <div class="dropdown-content2" style="top: 3.35vw; width: 7vw" id="signOutDropdown">
+                    <a style="padding: 0.5vw 1vw" onclick="logout()">Sign Out</a>
+                </div>
+            </div>
+        </header> -->
+        <div class="bodyhead">
+            <div style="color: black; padding: 0.5vw"><a href="/businessplanner/home">home</a> / <a href="/businessplanner/home/projects">projects</a> / <div style="display: inline-block; color: #efefef">ADDMILESTONE</div></div>
+        </div>
+        <div class="body">
+            <a href="/businessplanner/home/pmo" class="back-arrow"><img src="/images/Business Planner/icons8-back-arrow-90.png"></a>
+           <br>
+            <div class="report">
+                <p class="mt-[20px] text-[28px] font-semibold">
+                    Edit PMO permissions
+                </p>
+                <div>
+                    <form method="post" action="/businessplanner/pmo/manage_pmo/edit" class="flex flex-col gap-2">
+                        <div>Name: <%=data.name%></div>
+                        <div>Job role: <%=data.jobRole%></div>
+                        <div>Bu: <%=data.bu%></div>
+                        <div>Create project<input id="create" type="checkbox" name="createProj" ></div>
+                        <div>Edit project<input id="edit" type="checkbox" name="editProj" ></div>
+                        <div>Delete project<input id="delete" type="checkbox" name="deleteProj" ></div>
+                        <input hidden value="<%=data.id%>" name="id">
+                        <div>
+                            <input class="bg-green-700 text-white rounded-md" type="submit" value="submit">
+                            <button class="bg-green-700 text-white rounded-md p-2">
+                                Delete PMO
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="footer">
+                <p style="color: #366345; font-weight: bold">LAPO Mfb</p><p>@ 2023 DevOps.</p>
+                <p style="color: #366345; font-weight: bold; float: right"> LAPO Mfb</p><p style="float: right">Powered by </p>
+            </div>
+        </div>
+        <%if(message.error){%>
+            <div class="message-popup" id="popup" style="top: 25vw; left: 56vw">
+                <div class="popupheader">An error occured processing your request</div>
+                <div class="popupcontent">
+                    <p>
+                        <%=message.error %>
+                    </p>
+                    <button class="popupbtn" onclick="donTSave()">CANCEL</button>
+                </div>
+            </div>
+        <%}%>
+        <%if(message.confirmation){%>
+            <div class="message-popup" id="popup" style="top: 25vw; left: 56vw">
+                <div class="popupheader">An error occured processing your request</div>
+                <div class="popupcontent">
+                    <p>
+                        <%=message.confirmation %>
+                    </p>
+                    <button class="popupbtn" onclick="donTSave()">CANCEL</button>
+                </div>
+            </div>
+        <%}%>
+        <%if(message.status){%>
+            <div class="message-popup" id="popup" style="top: 25vw; left: 56vw">
+                <div class="popupheader">An error occured processing your request</div>
+                <div class="popupcontent">
+                    <p>
+                        <%=message.status %>
+                    </p>
+                    <button class="popupbtn" onclick="donTSave()">CANCEL</button>
+                </div>
+            </div>
+        <%}%>
+
+        <div class="popup" id="logoutBox">
+            <div class="popupheader">DO YOU WANT TO SIGN OUT?</div>
+            <div class="popupcontent" style="height: 6vw">Are you sure you want to sign out? You will be taken back to the login page.
+                    <br><br><a class="popupbtn" href="/businessplanner/logout">SIGN OUT</a><a class="popupbtn" onclick="logoutCancel()">CANCEL</a>
+            </div>
+        </div>
+    </body>
+    
+    <script src="/javascripts/BusinessPlanner.js"></script>
+
+    <script>
+        const resData = JSON.parse('<%-JSON.stringify(data)%>')
+        const createPermission = document.getElementById("create");
+        const editPermission = document.getElementById("edit");
+        const deletePermission = document.getElementById("delete");
+        createPermission.checked = resData.createProject
+        editPermission.checked = resData.editProject
+        deletePermission.checked = resData.deleteProject
+  // Update the checkbox state based on the boolean data
+  checkbox.checked = booleanData;
+    </script>
+      
+</html>

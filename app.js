@@ -8,10 +8,13 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var mypRouter = require('./routes/businessplanner');
 const flash = require('connect-flash');
+const fileUpload = require('express-fileupload');
 
 var app = express();
 
 const port = 4002;
+
+// app.use(fileUpload());
 
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.static(path.join(__dirname, 'public')));

@@ -37,7 +37,10 @@
                 <input name="prevTitle" hidden value="<%=data.mTitle%>" />
                 <input name="title" style="font-size: 2.1vw; background-color: white; border: none; font-weight: bold; width: 40%" value="<%= data.mTitle%>" required><br><br>
                 <label style="margin-top: 20px; margin-bottom: 10px;" for="desc">MILESTONE SUMMARY</label><br>
-                <textarea style="background-color: white; width: 100%; height: 150px;" name="description" placeholder="Edit description" required><%= data.mDescription%></textarea>
+                <textarea style="background-color: white; width: 100%; height: 100px;" name="description" placeholder="Edit description" required><%= data.mDescription%></textarea>
+
+                <label style="margin-top: 20px; margin-bottom: 10px;" for="desc">MILESTONE COMMENT</label><br>
+                <textarea style="background-color: white; width: 100%; height: 100px;" name="comment" placeholder="Edit description" required><%= data.mComment%></textarea>
                 <p style="color: red; font-size: 0.9vw; display: none; margin: -0.2vw 0 -2.25vw;">Invalid input</p><br><br>
                 <label for="priority">PRIORITY </label>
                 <input style="background-color: white;" name="priority" value="<%= data.mPriority%>" pattern="(High|Medium|Low)" list="priority" title="Value must be High, Medium or Low" required>

@@ -51,17 +51,35 @@
                                     <label for="endDate">End Date</label>
                                     <input id="endDate" type="date" name="endDate" placeholder="from" required>
                                 </div>
+                                <!-- <div style="display: flex; flex-direction: column;">
+                                    <label for="endDate">Unit</label>
+                                    <input id="endDate" type="date" name="endDate" placeholder="from" required>
+                                </div> -->
                             </div>
                         </div>
                         <div>
-                            <label for="document">Upload document</label>
-                            <input name="document" type="file" placeholder="Project document" >
+                            <label for="manager">Select PMO</label>
+                            <select name="manager">
+                                <%if(managers.length > 0) {
+                                    for(let i=0; i<managers.length; i ++) {%>
+                                        <option value="<%=managers[i].id%>"><%=managers[i].name%></option>
+                                    <%}
+                                }%>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="department">Unit/Department</label>
+                            <input placeholder="unit/department" name="department">
                         </div>
                      </div>
                     <label class="bg-green-600" for="desc">PROJECT DESCRIPTION</label><br>
                     <textarea name="description" rows="4" placeholder="Enter description here" class="text-area" onChange="(e) => handleValChange(e)" required></textarea>
                     <p style="color: red; font-size: 0.9vw; display: none; margin: -0.2vw 0 -2.25vw;">Invalid input</p><br><br>
                     <button type="submit" class="reportsubmit">SAVE PROJECT</button>
+                    <button id="addDoc" type="button">Add document</button>
+                    <div id="docContainer" style="display: flex; gap: 20px;">
+
+                    </div>
                 </fieldset>
             </div>
         <!-- <a id="addtask" onclick="addproject()" class="reportbtn"><img src="/images/Business Planner/icons8-plus-100.png" width="100%"></a>
@@ -99,4 +117,39 @@
         // Set the current date as the minimum date for the input
         // document.getElementById('startDate').setAttribute("min", "2023-09-18");
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const inputContainer = document.getElementById('docContainer');
+          const addInputButton = document.getElementById('addDoc');
+      
+          let inputCounter = 0;
+      
+          addInputButton.addEventListener('click', function () {
+            inputCounter++;
+      
+            const newInput = document.createElement('input');
+            newInput.type = 'file';
+            newInput.name = 'document' + inputCounter;
+            newInput.placeholder = 'Document' + inputCounter;
+            newInput.required = true;
+
+            const deleteButton = document.createElement('span');
+            deleteButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+          <path d="M8 6.586l4.293-4.293a1 1 0 1 0-1.414-1.414L6.586 5.172 2.293.879a1 1 0 0 0-1.414 1.414L5.172 6.586.879 10.879a1 1 0 1 0 1.414 1.414L6.586 8l4.293 4.293a1 1 0 0 0 1.414-1.414L8 6.586z"/>
+        </svg>
+      `;
+
+        // Set up the click event for the delete button
+        deleteButton.addEventListener('click', function () {
+        // Remove the input field and delete button when clicked
+        inputContainer.removeChild(newInput);
+        inputContainer.removeChild(deleteButton);
+      });
+
+            inputContainer.appendChild(newInput);
+            inputContainer.appendChild(deleteButton)
+          });
+        });
+      </script>
 </html>
